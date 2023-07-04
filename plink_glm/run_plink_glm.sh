@@ -16,7 +16,7 @@ awk '{gsub(/^GLYMAchr_/,""); print}' ../results/plink_glm/simple_glm_result_chr.
 # complex trait
 ../plink2 --glm allow-no-covars --allow-extra-chr --bed ./inputs/complex_trait.bed --bim ./inputs/complex_trait.bim --fam ./inputs/complex_trait.fam --pheno ../Raw_data/phenotypes_complex_trait.tsv --adjust --out ../results/plink_glm/complex_glm_result --covar-variance-standardize --freq --threads 32 --memory 100000
 
-# simple trait generated
+# generated simple trait 
 ../plink2 --glm allow-no-covars --allow-extra-chr --bed ./inputs/simple_trait.bed --bim ./inputs/simple_trait.bim --fam ./inputs/simple_trait.fam --pheno ../Raw_data/phenotypes_simple_trait_2col_gen.tsv --adjust cols='chrom','pos','alt','a1','ref','gc','fdrbh' --out ../results/plink_glm/simple_glm_gen_result_chr --covar-variance-standardize --freq --threads 32 --memory 100000
 awk '{gsub(/^GLYMAchr_/,""); print}' ../results/plink_glm/simple_glm_gen_result_chr.Leu.glm.linear.adjusted  > ../results/plink_glm/simple_glm_gen_result.Leu.glm.linear.adjusted
 awk '{gsub(/^GLYMAchr_/,""); print}' ../results/plink_glm/simple_glm_gen_result_chr.Leu.glm.linear > ../results/plink_glm/simple_glm_gen_result.Leu.glm.linear
