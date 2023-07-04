@@ -21,7 +21,7 @@ nrow(params.effects)
 # sort by descending effect size
 params.effects.sort<-params.effects[order(-params.effects$eff),]
 
-# show top 10 variants with highest effect
+# top 10 variants with highest effect
 head(params.effects.sort, 10) 
 
 # variants with the highest sparse effects
