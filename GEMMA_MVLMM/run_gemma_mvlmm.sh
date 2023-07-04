@@ -6,7 +6,7 @@ sed 's/KZ//g' genotypes_complex_trait.vcf > genotypes_complex_trait_processed.vc
 ./plink1.9 --vcf ../Raw_data/genotypes_complex_trait_processed.vcf -pheno ../Raw_data/soy2_gen_phenotypes_fast.txt --make-bed --allow-extra-chr --out ./input/soy2gen
 ./plink1.9 --vcf ../Raw_data/genotypes_simple_trait.vcf -pheno ../Raw_data/gen_soy_phenotypes_leu.tsv --make-bed --allow-extra-chr --out ./input/soybean_generated
 # simple trait
-## generating the kinship matrix
+## generate the kinship matrix
 ../gemma -bfile ./input/soybean_simple_genotypes_phen_recode1.9 -gk 1 -o kinship_soybean_matrix_center
 ## running mvlmm
 ../gemma -bfile ./input/soybean_simple_genotypes_phen_recode1.9 -k ./output/kinship_soybean_matrix_center.cXX.txt -lmm 4 -n 1 -o simple_soy_mvlmm
