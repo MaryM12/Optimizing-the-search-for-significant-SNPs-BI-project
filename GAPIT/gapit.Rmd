@@ -1,6 +1,5 @@
 ---
 title: "GAPIT: FarmCPU, BLINK, SUPER"
-author: "Liliia Bogdanova"
 date: "15 05 2023"
 output: html_document
 ---
