@@ -1,0 +1,186 @@
+---
+title: "GAPIT: FarmCPU, BLINK, SUPER"
+author: "Liliia Bogdanova"
+date: "15 05 2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+options(repos = c(CRAN = "http://cran.rstudio.com"))
+```
+# First, install the working directory GWAS_project/GAPIT/
+
+## Generation of genotype files with a normal distribution.
+```{r}
+# Simple
+phenotypes_simple <- read.table('../Raw_data/phenotypes_simple_trait.tsv', header = TRUE, sep='\t')
+phenotypes_simple$Leu <- round(rnorm(244, mean=mean(phenotypes_simple$Leu, na.rm = T), sd=sd(phenotypes_simple$Leu, na.rm = T)), 1)
+write.table(phenotypes_simple, file='../Raw_data/phenotypes_simple_trait_gen.tsv', quote=FALSE, sep='\t', row.names=FALSE)
+
+# Complex
+phenotypes_complex <- read.table('../Raw_data/phenotypes_complex_trait.tsv', header = TRUE, sep='\t')
+phenotypes_complex$gen_pheno <- round(rnorm(97, mean=mean(phenotypes_complex$pheno, na.rm = T), sd=sd(phenotypes_complex$pheno, na.rm = T)), 1)
+phenotypes_complex <- subset(phenotypes_complex, select = -pheno)
+write.table(phenotypes_complex, file='../Raw_data/phenotypes_complex_trait_gen.tsv', quote=FALSE, sep='\t', row.names=FALSE)
+```
+Download GAPIT.
+```{r}
+invisible(source("http://zzlab.net/GAPIT/GAPIT.library.R"))
+invisible(source("http://zzlab.net/GAPIT/gapit_functions.txt"))
+```
+Prepare the data in the variables for the simple trait. Here myY is the phenotype data, myG is the genotype data.
+```{r}
+phenotypes_simple <- read.table("../Raw_data/phenotypes_simple_trait.tsv", sep = '\t', head = TRUE)
+myY <- subset(phenotypes_simple, select = -FID)
+myG <- read.delim("./input/genotype_simple.hmp.txt", head = FALSE)
+myG[,1]=c("rs",1:(nrow(myG)-1))
+```
+# Simple trait
+#### FarmCPU for simple trait
+```{r, results='hide'}
+setwd('./FarmCPU_simple')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="FarmCPU",
+  SNP.FDR =0.05
+))
+```
+#### SUPER for simple trait
+```{r, results='hide'}
+setwd('./SUPER_simple_gen')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="SUPER",
+  SNP.FDR =0.05
+))
+```
+#### BLINK for simple trait
+```{r, results='hide'}
+setwd('./BLINK_simple')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="BLINK",
+  SNP.FDR =0.05
+))
+```
+# Generated data for a simple trait.
+```{r, results='hide'}
+phenotypes_simple_gen <- read.table("../Raw_data/phenotypes_simple_trait_gen.tsv", sep = '\t', head = TRUE)
+myY <- subset(phenotypes_simple_gen, select = -FID)
+```
+#### FarmCPU for simple trait generated
+```{r, results='hide'}
+setwd('./FarmCPU_simple_gen')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="FarmCPU",
+  SNP.FDR =0.05
+))
+```
+#### SUPER for simple trait generated
+```{r, results='hide'}
+setwd('./SUPER_simple_gen')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="SUPER",
+  SNP.FDR =0.05
+))
+```
+#### BLINK for simple trait generated
+```{r, results='hide'}
+setwd('./BLINK_simple_gen')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="BLINK",
+  SNP.FDR =0.05
+))
+```
+# Complex trait
+```{r, results='hide'}
+myY  <- read.table("../Raw_data/phenotypes_complex_trait.tsv", sep = '\t', head = TRUE)
+myG <- read.delim("./input/genotype_complex.hmp.txt", head = FALSE)
+myG[,1]=c("rs",1:(nrow(myG)-1))
+```
+#### FarmCPU for complex trait
+```{r, results='hide'}
+setwd('./FarmCPU_complex')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="FarmCPU",
+  SNP.FDR =0.05
+))
+```
+#### SUPER for complex trait
+```{r, results='hide'}
+setwd('./SUPER_complex')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="SUPER",
+  SNP.FDR =0.05
+))
+```
+#### BLINK for complex trait
+```{r, results='hide'}
+setwd('./BLINK_complex')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="BLINK",
+  SNP.FDR =0.05
+))
+```
+# Generated values for a complex trait.
+```{r, results='hide'}
+myY  <- read.table("../Raw_data/phenotypes_complex_trait_gen.tsv", sep = '\t', head = TRUE)
+```
+#### FarmCPU for complex trait generated
+```{r, results='hide'}
+setwd('./FarmCPU_complex_gen')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="FarmCPU",
+  SNP.FDR =0.05
+))
+```
+#### SUPER for complex trait generated
+```{r, results='hide'}
+setwd('./SUPER_complex_gen')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="SUPER",
+  SNP.FDR =0.05
+))
+```
+#### BLINK for complex trait generated
+```{r, results='hide'}
+setwd('./BLINK_complex_gen')
+system.time(myGAPIT <- GAPIT(
+  Y=myY,
+  G=myG,
+  PCA.total=3, 
+  model="BLINK",
+  SNP.FDR =0.05
+))
+```
